@@ -1,0 +1,23 @@
+body {
+        margin: 0;
+    }
+
+.toolbar_template_a.dhx_toolbar {
+		background-color: #000;
+	}
+	
+.action-buttons {
+		display: flex;
+		justify-content: space-evenly;
+      	width: 100%;
+	}
+
+.dhx_demo-grid .edit-button {
+		cursor: pointer;
+		color: #0288d1;
+	}
+
+.dhx_demo-grid .remove-button {
+		cursor: pointer;
+		color: red;
+	}
