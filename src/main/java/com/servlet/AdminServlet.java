@@ -8,27 +8,45 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.velocity.Template;
+import org.apache.velocity.context.Context;
+import org.apache.velocity.tools.view.VelocityLayoutServlet;
+
 import com.bean.User;
 import com.util.HttpHandler;
 
-public class AdminServlet extends HttpServlet{
+public class AdminServlet extends VelocityLayoutServlet{
+	
 	
 	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+	protected Template handleRequest(HttpServletRequest req, HttpServletResponse res, Context context) {
 		
 		HttpHandler.handle(res);
 		HttpSession session = req.getSession(false);
+		String name = null;
 		if (session != null) {
             User user = (User) session.getAttribute("user");
-            if (user == null)   {
-            	System.out.println("Bag");
-            	res.sendRedirect("logout");
+            if (user == null)   {         
+            	try {
+					res.sendRedirect("logout");
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}
             }else {
-            	req.getRequestDispatcher("pages/admin.html").forward(req, res);
+            	name = user.getUserName();
             }
          }else {
-        	 res.sendRedirect("logout");
+        	 try {
+					res.sendRedirect("logout");
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}
          }
-		
+
+		Template template = getTemplate("pages/admin.html");
+        context.put("user", name);
+        return template;
 	}
 }

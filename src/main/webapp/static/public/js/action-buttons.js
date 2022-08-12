@@ -13,6 +13,14 @@ const toolbarData = [
             type: "spacer"
         },
         {
+            id: "user",
+            type: "button",
+            circle: true,
+            value: user,
+            size: "small",        
+            full: false
+        },
+        {
             id: "logout",
             type: "button",
             circle: true,
