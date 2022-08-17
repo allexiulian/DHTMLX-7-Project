@@ -51,7 +51,7 @@ function create_vacation_form(){
      			data: [
 		{ value: "Holiday",id: "Holiday" },
         { value: "Sick",id: "Sick" },
-        { value: "Migraine:",id: "Migraine:" },
+        { value: "Migraine",id: "Migraine" },
         { value: "Anxiety",id: "Anxiety" },
         { value: "Stress",id: "Stress" },
         { value: "Injury",id: "Injury" }

@@ -113,3 +113,56 @@ function list_emp_bootbox(data){
 
 create_list_vacation(data);
 }
+
+function add_upload_bootbox(){
+	var dialog = bootbox.dialog({
+		title: "Upload Vacation",
+		message: '<form id="upload" enctype="multipart/form-data"><input type="file" name="file" /></form>',
+		closeButton: false,		
+		buttons:{
+			cancel:{
+				label: "Cancel",
+				className: 'btn btn-secondary',
+				callback: function(){
+					
+				}
+			},
+			
+			submit:{
+				label: "Upload",
+				className: 'btn btn-primary',
+				callback: function(){
+					var form = $('#upload')[0];
+					var data = new FormData(form);
+					$.ajax({
+						type: "POST",
+						url: "csv",
+						data: data,
+						enctype: 'multipart/form-data',
+						processData: false,
+						contentType: false,
+						cache: false,
+						success: function(data){
+							dialog.modal('hide');
+							bootbox.alert("Upload Successful");	
+						},
+						error: function(data){
+							bootbox.dialog({
+								title: 'Failed to upload',
+								message: "<p>"+data.responseText+"</p>",
+								size: 'large',
+								buttons: {
+										cancel: {
+											label: "ok",
+											className: 'btn-warning'
+									}
+								}
+							});
+						}
+					});
+					return false;
+				}
+			}
+		}
+	});	
+}

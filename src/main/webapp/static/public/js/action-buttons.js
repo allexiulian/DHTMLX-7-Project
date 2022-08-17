@@ -7,7 +7,25 @@ const toolbarData = [
             value: "Add a new employee",
             size: "small",
             icon: "mdi mdi-plus",
-            full: true
+            full: false
+        },
+         {
+            id: "download",
+            type: "button",
+            circle: true,
+            icon:"mdi mdi-download",
+            value: "Download vacation",
+            size: "small",        
+            full: false
+        },
+        {
+            id: "upload",
+            type: "button",
+            circle: true,
+            icon:"mdi mdi-upload",
+            value: "Upload vacation",
+            size: "small",        
+            full: false
         },
         {
             type: "spacer"

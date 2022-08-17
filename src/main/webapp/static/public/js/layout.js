@@ -31,8 +31,14 @@ toolbar.events.on("click", function (id) {
     if (id === "add") {
     add_emp_bootbox();
     }
+    if (id === "upload") {
+    add_upload_bootbox();
+    }
     if(id == "logout"){
 	location.href= "logout";	
+}
+	if(id == "download"){
+	window.location= "csv";	
 }
     }
 );
