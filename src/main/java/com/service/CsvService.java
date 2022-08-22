@@ -8,6 +8,6 @@ public interface CsvService {
 
 	List<String> getAllVacations() throws IOException;
 
-	boolean upload(InputStream fileInputStream) throws IOException;
+	String upload(InputStream fileInputStream) throws IOException;
 	
 }

@@ -2,6 +2,9 @@ package com.bean;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(value= {"id"})
 public class Vacation {
 	private Long id;
 	private LocalDate vacationFrom;
@@ -54,9 +57,11 @@ public class Vacation {
 
 	@Override
 	public String toString() {
-		return "Vacation [id=" + id + ", vacationFrom=" + vacationFrom + ", vacationTo=" + vacationTo + ", reason="
-				+ reason + ", employeeId=" + employeeId + "]";
+		return "Vacation [vacationFrom=" + vacationFrom + ", vacationTo=" + vacationTo + ", reason=" + reason
+				+ ", employeeId=" + employeeId + "]";
 	}
+
+	
 
 	
 }

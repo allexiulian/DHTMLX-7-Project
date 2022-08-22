@@ -49,8 +49,10 @@ protected void doGet(HttpServletRequest req, HttpServletResponse res) throws Ser
 protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 	Part filePart = req.getPart("file");
 	InputStream fileInputStream = filePart.getInputStream();
-	if(!csvService.upload(fileInputStream)) {
+	String status = csvService.upload(fileInputStream);
+	if(status.contains("Duplicate") || status.contains("Invalid")) {
 		res.setStatus(HttpServletResponse.SC_CONFLICT);
+		res.getWriter().write(status);
 	}
 	
 }

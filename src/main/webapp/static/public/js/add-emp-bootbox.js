@@ -17,7 +17,7 @@ function add_emp_bootbox(){
 				className: 'btn btn-primary',
 				callback: function(){
 					if(form.validate()){
-						dhx.ajax.post("viewemployee", form.getValue()).then(function(){
+						dhx.ajax.post("viewemployee?action=add"  , form.getValue()).then(function(){
 							grid.data.load("viewemployee");
 							dialog.modal('hide');
 						})
@@ -51,7 +51,7 @@ function delete_emp_bootbox(data){
 		},
 		callback: function (result) {
 			if (result) {
-				dhx.ajax.post("deleteemployee", data.row.id).then(function () {
+				dhx.ajax.post("viewemployee?action=delete", data.row.id).then(function () {
 					grid.data.load("viewemployee");
 					confirm.modal('hide');
 				});

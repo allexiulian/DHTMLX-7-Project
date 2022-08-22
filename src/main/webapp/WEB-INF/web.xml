@@ -9,10 +9,6 @@
 <servlet-class>com.servlet.ViewEmployeeServlet</servlet-class>
 </servlet>
 <servlet>
-<servlet-name>deleteemployee</servlet-name>
-<servlet-class>com.servlet.DeleteEmployeeServlet</servlet-class>
-</servlet>
-<servlet>
 <servlet-name>vacation</servlet-name>
 <servlet-class>com.servlet.VacationServlet</servlet-class>
 </servlet>
@@ -38,10 +34,6 @@
 <servlet-mapping>
 <servlet-name>viewemployee</servlet-name>
 <url-pattern>/viewemployee</url-pattern>
-</servlet-mapping>
-<servlet-mapping>
-<servlet-name>deleteemployee</servlet-name>
-<url-pattern>/deleteemployee</url-pattern>
 </servlet-mapping>
 <servlet-mapping>
 <servlet-name>vacation</servlet-name>

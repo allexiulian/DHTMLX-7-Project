@@ -39,8 +39,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	            	obj.setBirthdate(rs.getDate(5).toLocalDate());
 	            	obj.setAddress(rs.getString(6));
 	            	obj.setCountry(rs.getString(7));
-	                list.add(obj);
-	            	System.out.println(obj);
+	                list.add(obj);	      
 	         }
 	         DataBaseUtil.closeConnection(rs, stmt, conn);
 	      } catch (SQLException | ClassNotFoundException e) {

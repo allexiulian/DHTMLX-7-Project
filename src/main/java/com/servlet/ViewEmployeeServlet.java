@@ -22,17 +22,27 @@ public class ViewEmployeeServlet extends HttpServlet{
 	
 	}
 	
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {		
+		String action = req.getParameter("action");
 		
-		if(employeeservice.create(req)) {
-			res.setStatus(HttpServletResponse.SC_ACCEPTED);
-		} else {
-			
-            res.setStatus(HttpServletResponse.SC_CONFLICT);
-        }
-       
+		switch (action) {
+		case "add": {
+			if(!employeeservice.create(req)) {
+				res.setStatus(HttpServletResponse.SC_CONFLICT);			
+			} 
+			break;
 		
-
+		}
+		case "delete": {
+			if (!employeeservice.delete(req)) {
+				res.setStatus(HttpServletResponse.SC_CONFLICT);	
+			}
+			break;
+		
+		}
+		default:
+			res.setStatus(HttpServletResponse.SC_CONFLICT);
+		}
+		
 	}
-
 }

@@ -3,8 +3,13 @@ package com.service.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import com.bean.Vacation;
 import com.dao.VacationDao;
@@ -39,7 +44,6 @@ public class CsvServiceImpl implements CsvService{
 	public CsvSchema createSchema() throws IOException{
 		
 		return CsvSchema.builder()
-				.addColumn("id", CsvSchema.ColumnType.NUMBER)
 				.addColumn("vacationFrom", CsvSchema.ColumnType.NUMBER_OR_STRING)
 				.addColumn("vacationTo", CsvSchema.ColumnType.NUMBER_OR_STRING)
 				.addColumn("reason", CsvSchema.ColumnType.STRING)
@@ -50,16 +54,45 @@ public class CsvServiceImpl implements CsvService{
 	}
 
 	@Override
-	public boolean upload(InputStream fileInputStream) throws IOException {
+	public String upload(InputStream fileInputStream) throws IOException {
 		Log.info("Parse csv to object");
+		StringBuffer resp = new StringBuffer();
 		CsvMapper mapper = new CsvMapper();
 		mapper.findAndRegisterModules();
 		mapper.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false);
 		CsvSchema schema = createSchema();
 		MappingIterator<Vacation> list = mapper.readerWithTypedSchemaFor(Vacation.class).with(schema).readValues(fileInputStream);
 		List<Vacation> result = list.readAll();
-		return vacationDao.saveAll(result);
-		
+		if (result.size() == 0) {
+			return resp.append("No file detected!").toString();
+		}
+		HashSet<String> set = new HashSet<>();
+		AtomicInteger row = new AtomicInteger();
+		List<Vacation> db = vacationDao.getAllVacations();
+		result.forEach(e -> {
+			row.getAndIncrement();
+
+				if (!set.add(e.toString())) {
+					resp.append("Duplicate - row: ").append(row.get() + 1).append("</br>");
+				}
+				if (dbCheckDuplicate(db, e)) {
+					resp.append("Duplicate database - row: ").append(row.get() + 1).append("</br>");
+				}			
+		});
+		if (resp.length() == 0) {
+			resp.append(vacationDao.saveAll(result) ? "ok" : "Invalid data!");
+		}
+		return resp.toString();
 	}
+
+	
+
+	private boolean dbCheckDuplicate(List<Vacation> db, Vacation v) {
+		return db.stream()
+				.anyMatch(e -> e.getVacationFrom().equals(v.getVacationFrom())
+						&& e.getVacationTo().equals(v.getVacationTo()) && e.getReason().equals(v.getReason())
+						&& Objects.equals(e.getEmployeeId(), v.getEmployeeId()));
+	}
+
 
 }
