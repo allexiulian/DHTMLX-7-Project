@@ -44,31 +44,12 @@ public class VacationDaoImpl implements VacationDao {
 		bean.setVacationFrom(rs.getDate(2).toLocalDate());
 		bean.setVacationTo(rs.getDate(3).toLocalDate());
 		bean.setReason(rs.getString(4));
-		bean.setEmployeeId(rs.getLong(5));
+		bean.setStatus(rs.getString(5));
+		bean.setEmployeeId(rs.getLong(6));
 		return bean;
 	}
 
-	@Override
-	public boolean save(Vacation bean) {
-		String sql = "insert into project_emp.vacation (\"from\",\"to\", \"reason\", \"emp_id\") values( ?, ?, ?, ?)";
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		try {
-			conn = DataBaseUtil.getConnection();
-			stmt = conn.prepareStatement(sql);
-			stmt.setDate(1, Date.valueOf(bean.getVacationFrom()));
-			stmt.setDate(2, Date.valueOf(bean.getVacationTo()));
-			stmt.setString(3, bean.getReason());
-			stmt.setLong(4, bean.getEmployeeId());
-			return stmt.executeUpdate() > 0;
-		} catch (ClassNotFoundException | SQLException e1) {
-			System.out.println("failed");
-			e1.printStackTrace();
-			return false;
-		} finally {
-			DataBaseUtil.closeConnection(null, stmt, conn);
-		}
-	}
+	
 
 	@Override
 	public List<Vacation> getAllVacations() {
@@ -93,18 +74,43 @@ public class VacationDaoImpl implements VacationDao {
 	}
 
 	@Override
+	public boolean save(Vacation bean) {
+		String sql = "insert into project_emp.vacation (\"from\",\"to\", \"reason\", \"status\", \"emp_id\") values(?, ?, ?, ?, ?)";
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = DataBaseUtil.getConnection();
+			stmt = conn.prepareStatement(sql);
+			stmt.setDate(1, Date.valueOf(bean.getVacationFrom()));
+			stmt.setDate(2, Date.valueOf(bean.getVacationTo()));
+			stmt.setString(3, bean.getReason());
+			stmt.setString(4, bean.getStatus());
+			stmt.setLong(5, bean.getEmployeeId());
+			return stmt.executeUpdate() > 0;
+		} catch (ClassNotFoundException | SQLException e1) {
+			System.out.println("failed");
+			e1.printStackTrace();
+			return false;
+		} finally {
+			DataBaseUtil.closeConnection(null, stmt, conn);
+		}
+	}
+	
+	@Override
 	public boolean saveAll(List<Vacation> result) {
-		String sql = "insert into project_emp.vacation (\"from\",\"to\", \"reason\", \"emp_id\") values( ?, ?, ?, ?)";
+		String sql = "insert into project_emp.vacation (\"from\",\"to\", \"reason\", \"status\", \"emp_id\") values(?, ?, ?, ?, ?)";
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
 			conn = DataBaseUtil.getConnection();
 			stmt = conn.prepareStatement(sql);
 			for (Vacation bean : result) {
+				System.out.println(bean);
 				stmt.setDate(1, Date.valueOf(bean.getVacationFrom()));
 				stmt.setDate(2, Date.valueOf(bean.getVacationTo()));
 				stmt.setString(3, bean.getReason());
-				stmt.setLong(4, bean.getEmployeeId());
+				stmt.setString(4, bean.getStatus());
+				stmt.setLong(5, bean.getEmployeeId());
 				stmt.addBatch();
 			}
 			stmt.executeBatch();
@@ -116,6 +122,68 @@ public class VacationDaoImpl implements VacationDao {
 		} finally {
 			DataBaseUtil.closeConnection(null, stmt, conn);
 		}
+	}
+
+	@Override
+	public void acceptVacation(String status, Long id) {
+		String sql = "update project_emp.vacation set status = ? where id = ?";
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = DataBaseUtil.getConnection();
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, status);
+			stmt.setLong(2, id);
+			stmt.executeUpdate();
+			
+			}catch (ClassNotFoundException | SQLException e1) {		
+				
+			} finally {
+				DataBaseUtil.closeConnection(null, stmt, conn);
+			}
+		
+			
+		
+	}
+
+	@Override
+	public void declineVacation(String status, Long id) {
+		String sql = "update project_emp.vacation set status = ? where id = ?";
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = DataBaseUtil.getConnection();
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, status);
+			stmt.setLong(2, id);
+			stmt.executeUpdate();
+			}catch (ClassNotFoundException | SQLException e1) {				
+			} finally {
+				DataBaseUtil.closeConnection(null, stmt, conn);
+			}	
+	}
+
+	@Override
+	public List<Vacation> findAllEmployeeWithPending(Long id) {
+		String sql = "select * from project_emp.vacation where emp_id = ? and status ='Pending'";
+		List<Vacation> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = DataBaseUtil.getConnection();
+			stmt = conn.prepareStatement(sql);
+			stmt.setLong(1, id);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				list.add(createVacantion(rs));
+			}
+		} catch (ClassNotFoundException | SQLException e1) {
+			e1.printStackTrace();
+		} finally {
+			DataBaseUtil.closeConnection(rs, stmt, conn);
+		}
+		return list;
 	}
 
 }

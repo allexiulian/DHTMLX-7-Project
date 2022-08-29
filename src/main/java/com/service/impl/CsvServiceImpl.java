@@ -47,6 +47,7 @@ public class CsvServiceImpl implements CsvService{
 				.addColumn("vacationFrom", CsvSchema.ColumnType.NUMBER_OR_STRING)
 				.addColumn("vacationTo", CsvSchema.ColumnType.NUMBER_OR_STRING)
 				.addColumn("reason", CsvSchema.ColumnType.STRING)
+				.addColumn("status", CsvSchema.ColumnType.STRING)
 				.addColumn("employeeId", CsvSchema.ColumnType.NUMBER)
 				.build().withColumnSeparator(',')
 				.withLineSeparator("\n")

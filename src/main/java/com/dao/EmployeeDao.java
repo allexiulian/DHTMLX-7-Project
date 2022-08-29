@@ -1,11 +1,9 @@
 package com.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 import com.bean.Employee;
-import com.bean.User;
 
 public interface EmployeeDao {
 	
@@ -15,5 +13,8 @@ public interface EmployeeDao {
 
 	boolean detele(Long id);
 
+	Optional<Employee> findByEmailAndPassword(String userName, String password);
+
+	Optional<Employee> findByEmpID(Long id);
 	
 }

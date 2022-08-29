@@ -15,4 +15,10 @@ public interface VacationDao {
 
 	boolean saveAll(List<Vacation> result);
 
+	void acceptVacation(String status, Long id);
+
+	void declineVacation(String status, Long id);
+
+	List<Vacation> findAllEmployeeWithPending(Long id);
+
 }

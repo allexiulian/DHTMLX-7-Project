@@ -1,6 +1,8 @@
 package com.bean;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Employee {
 	
@@ -11,6 +13,8 @@ private String email;
 private LocalDate birthdate;
 private String address;
 private String country;
+private String password;
+private Set<Role> role = new HashSet<>();
 
 public Employee() {
 }
@@ -71,11 +75,31 @@ public void setCountry(String country) {
 	this.country = country;
 }
 
+public String getPassword() {
+	return password;
+}
+
+public void setPassword(String password) {
+	this.password = password;
+}
+
+
+
+public Set<Role> getRole() {
+	return role;
+}
+
+public void setRole(Set<Role> role) {
+	this.role = role;
+}
+public void addRole(Role role) {
+	this.role.add(role);
+}
 @Override
 public String toString() {
 	return "Employee [id=" + id + ", name=" + name + ", phone=" + phone + ", email=" + email + ", birthdate="
-			+ birthdate + ", address=" + address + ", country=" + country + "]";
+			+ birthdate + ", address=" + address + ", country=" + country + ", password=" + password + ", role=" + role
+			+ "]";
 }
-
 
 }

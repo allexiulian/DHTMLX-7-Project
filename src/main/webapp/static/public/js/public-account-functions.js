@@ -1,5 +1,5 @@
-function create_vacation_form(){
-	 form = new dhx.Form("form_vacation", {
+function create_vacation_account_form(){
+	 form = new dhx.Form("form_vacation_account", {
 		css: "dhx_widget--bg_white dhx_widget--bordered",
 		align: "center",
 		padding: "40px",
@@ -67,5 +67,19 @@ function create_vacation_form(){
             form.getItem(date).validate();
         }
     });
-    return form;
+}
+
+function view_vacation_account_form(){
+	const vac_list = new dhx.Grid("view_vacation_account", {
+		css: "dhx_widget--bordered dhx_widget--no-border_top ",
+		columns: [
+			{id: "vacationFrom",type:"date",dateFormat:"%d-%M-%Y", align:"left", gravity: 1, header: [{text: "From", align: "center" }]},
+			{id: "vacationTo",type:"date",dateFormat:"%d-%M-%Y", align:"left", gravity: 1, header: [{text: "To", align: "center" }]},
+			{id: "reason", gravity: 1, header: [{ text: "Reason", align: "center" }]},
+			{id: "status", gravity: 1, header: [{ text: "Status", align: "center" }]}
+		],
+		height:350,
+		autoWidth: true,
+	});
+	vac_list.data.load("vacation?id=" + userid);
 }

@@ -1,0 +1,22 @@
+body {
+	background: -webkit-linear-gradient(left, #BBD2C5, #536976);
+}
+
+.employee-profile {
+	padding: 3%;
+	margin-bottom: 3%;
+	border-radius: 0.5rem;
+	background: #fff;
+}
+
+.profile-head h5 {
+	color: #333;
+}
+
+.profile-head h6 {
+	color: #0062cc;
+}
+
+.profile-tab label {
+	font-weight: 600;
+}

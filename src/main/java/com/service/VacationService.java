@@ -13,7 +13,13 @@ public interface VacationService {
 
 	String getJson(Long id);
 
-	boolean create(HttpServletRequest req) throws JsonSyntaxException, IOException;
+	int create(HttpServletRequest req) throws JsonSyntaxException, IOException;
+
+	void accept(String action, HttpServletRequest req) throws IOException;
+
+	void decline(String action, HttpServletRequest req) throws IOException;
+
+	String getJsonWithPending(Long id);
 
 	
 

@@ -1,3 +1,4 @@
+============Employee============
 -- Table: project_emp.employee
 
 -- DROP TABLE IF EXISTS project_emp.employee;
@@ -11,6 +12,7 @@ CREATE TABLE IF NOT EXISTS project_emp.employee
     birthdate date,
     address character varying COLLATE pg_catalog."default",
     country character varying COLLATE pg_catalog."default",
+    password character varying COLLATE pg_catalog."default",
     CONSTRAINT employee_pkey PRIMARY KEY (id),
     CONSTRAINT email_unique UNIQUE (email)
 )
@@ -19,52 +21,70 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS project_emp.employee
     OWNER to postgres;
-    
-    
-    
-    
-    
-    
-    
-    
-    -- Table: project_emp.user
 
--- DROP TABLE IF EXISTS project_emp."user";
 
-CREATE TABLE IF NOT EXISTS project_emp."user"
+============Employee_Role============
+-- Table: project_emp.employee_role
+
+-- DROP TABLE IF EXISTS project_emp.employee_role;
+
+CREATE TABLE IF NOT EXISTS project_emp.employee_role
 (
-    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( CYCLE INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
-    username character varying COLLATE pg_catalog."default",
-    password character varying COLLATE pg_catalog."default",
-    emp_id bigint,
-    CONSTRAINT user_pkey PRIMARY KEY (id),
-    CONSTRAINT emp_id_user_id FOREIGN KEY (emp_id)
+    emp_id bigint NOT NULL,
+    role_id bigint NOT NULL,
+    CONSTRAINT employee_role_pkey PRIMARY KEY (emp_id, role_id),
+    CONSTRAINT emp_id_fk FOREIGN KEY (emp_id)
         REFERENCES project_emp.employee (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT role_id_fk FOREIGN KEY (role_id)
+        REFERENCES project_emp.role (id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS project_emp."user"
+ALTER TABLE IF EXISTS project_emp.employee_role
     OWNER to postgres;
--- Index: fki_emp_id_user_id
+-- Index: fki_emp_id_fk
 
--- DROP INDEX IF EXISTS project_emp.fki_emp_id_user_id;
+-- DROP INDEX IF EXISTS project_emp.fki_emp_id_fk;
 
-CREATE INDEX IF NOT EXISTS fki_emp_id_user_id
-    ON project_emp."user" USING btree
+CREATE INDEX IF NOT EXISTS fki_emp_id_fk
+    ON project_emp.employee_role USING btree
     (emp_id ASC NULLS LAST)
     TABLESPACE pg_default;
-    
-    
-    
-    
-    
-    
-    
-    
-    -- Table: project_emp.vacation
+-- Index: fki_role_id_fk
+
+-- DROP INDEX IF EXISTS project_emp.fki_role_id_fk;
+
+CREATE INDEX IF NOT EXISTS fki_role_id_fk
+    ON project_emp.employee_role USING btree
+    (role_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+
+============Role============
+-- Table: project_emp.role
+
+-- DROP TABLE IF EXISTS project_emp.role;
+
+CREATE TABLE IF NOT EXISTS project_emp.role
+(
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( CYCLE INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
+    role_name character varying COLLATE pg_catalog."default",
+    CONSTRAINT role_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS project_emp.role
+    OWNER to postgres;
+
+
+============Vacation============
+-- Table: project_emp.vacation
 
 -- DROP TABLE IF EXISTS project_emp.vacation;
 
@@ -74,9 +94,10 @@ CREATE TABLE IF NOT EXISTS project_emp.vacation
     "from" date,
     "to" date,
     reason character varying COLLATE pg_catalog."default",
+    status character varying COLLATE pg_catalog."default",
     emp_id bigint NOT NULL,
     CONSTRAINT vacation_pkey PRIMARY KEY (id),
-    CONSTRAINT fk_vacation_employee_id FOREIGN KEY (emp_id)
+    CONSTRAINT emp_vac_fk FOREIGN KEY (emp_id)
         REFERENCES project_emp.employee (id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE
@@ -86,6 +107,14 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS project_emp.vacation
     OWNER to postgres;
+-- Index: fki_emp_vac_fk
+
+-- DROP INDEX IF EXISTS project_emp.fki_emp_vac_fk;
+
+CREATE INDEX IF NOT EXISTS fki_emp_vac_fk
+    ON project_emp.vacation USING btree
+    (emp_id ASC NULLS LAST)
+    TABLESPACE pg_default;
 -- Index: fki_emp_vacation
 
 -- DROP INDEX IF EXISTS project_emp.fki_emp_vacation;

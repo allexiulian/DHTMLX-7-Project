@@ -28,7 +28,10 @@
 <servlet-name>csvservlet</servlet-name>
 <servlet-class>com.servlet.CsvServlet</servlet-class>
 </servlet>
-
+<servlet>
+<servlet-name>account</servlet-name>
+<servlet-class>com.servlet.AccountServlet</servlet-class>
+</servlet>
 
 
 <servlet-mapping>
@@ -54,6 +57,10 @@
 <servlet-mapping>
 <servlet-name>csvservlet</servlet-name>
 <url-pattern>/csv</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>account</servlet-name>
+<url-pattern>/account</url-pattern>
 </servlet-mapping>
 
 <session-config>

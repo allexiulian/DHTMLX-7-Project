@@ -50,8 +50,8 @@ a{
             </div>
 
             <div class="mb-3">
-              <input type="text" class="form-control" id="userName"s
-                placeholder="Username">
+              <input type="text" class="form-control" id="email"s
+                placeholder="email">
             </div>
             <div class="mb-3">
               <input type="password" class="form-control" id="password" placeholder="password">
@@ -70,7 +70,7 @@ a{
 		$("#submitButton").click(function (e) {
 			e.preventDefault();
 			var formValue = {
-				userName: $("#userName").val(),
+				email: $("#email").val(),
 				password: $("#password").val()
 			}
 			$.ajax({
@@ -78,7 +78,7 @@ a{
 				url: "login",
 				data: JSON.stringify(formValue),
 				success: function (data) {
-					location.href = "admin";
+					location.href = "account";
 				},
 				error: function (data) {
 					alert("Invalid data");

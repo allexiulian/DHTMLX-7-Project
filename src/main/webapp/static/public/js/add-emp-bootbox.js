@@ -62,7 +62,7 @@ function delete_emp_bootbox(data){
 	
 }
 
-function add_vacation_bootbox(data){
+function add_vacation_bootbox(id, action){
 	var dialog = bootbox.dialog({
 		title: 'Add Vacation',
 		message: '<div id="form_vacation"></div>',
@@ -82,10 +82,24 @@ function add_vacation_bootbox(data){
 				callback: function () {
 					if(form.validate()){
 					var fullForm = form.getValue();
-					fullForm.employeeId = data.row.id;
-					dhx.ajax.post("vacation", fullForm).then(function () {						
+					fullForm.employeeId = id;
+					dhx.ajax.post("vacation?action="+action, fullForm).then(function () {						
 						dialog.modal('hide');
-					});
+						location.reload();
+					}).catch(function (err) {
+							bootbox.dialog({
+								title: 'Failed',
+								message: "<p>" + err.message + "</p>",
+								size: 'sm',
+								buttons: {
+									cancel: {
+										label: "ok",
+										className: 'btn-warning'
+									}
+								}
+							});
+						});
+
 					}
 					return false;
 				}

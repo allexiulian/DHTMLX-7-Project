@@ -36,10 +36,14 @@ toolbar.events.on("click", function (id) {
     }
     if(id == "logout"){
 	location.href= "logout";	
-}
+	}
 	if(id == "download"){
 	window.location= "csv";	
-}
+	}
+	if(id == "user"){
+	window.location= "account";	
+	}
+	
     }
 );
 
@@ -57,7 +61,7 @@ const grid = new dhx.Grid(null, {
             id: "action", gravity: 1.2, header: [{ text: "Actions", align: "center" }],
             htmlEnable: true, align: "center",
             template: function () {
-                return "<span class='action-buttons'><a class='btn btn-outline-success add-button'>Add</a><a class='btn btn-outline-info list-button'>List</a><a class='btn btn-outline-danger delete-button'>Delete</a></span>"
+                return "<span class='action-buttons'><a class='btn btn-outline-secondary view-button'>View</a><a class='btn btn-outline-success add-button'>Add</a><a class='btn btn-outline-info list-button'>List</a><a class='btn btn-outline-danger delete-button'>Delete</a></span>"
             }
         }
     ],
@@ -66,7 +70,7 @@ const grid = new dhx.Grid(null, {
         onclick: {
 			"add-button": function (e, data){
 				console.log(data);
-				add_vacation_bootbox(data);
+				add_vacation_bootbox(data.row.id, "add");
 			},
 			
 			"list-button": function (e, data) {
@@ -75,6 +79,10 @@ const grid = new dhx.Grid(null, {
 			
             "delete-button": function (e, data) {
                 delete_emp_bootbox(data);
+            },
+            
+            "view-button": function (e, data) {
+                location.href = "account?id="+data.row.id;
             }
             
         }

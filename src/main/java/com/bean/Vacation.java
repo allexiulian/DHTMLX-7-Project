@@ -1,6 +1,7 @@
 package com.bean;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -10,6 +11,7 @@ public class Vacation {
 	private LocalDate vacationFrom;
 	private LocalDate vacationTo;
 	private String reason;
+	private String status="Pending";
 	private Long employeeId;
 	
 	public Vacation() {
@@ -47,6 +49,14 @@ public class Vacation {
 		this.reason = reason;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public Long getEmployeeId() {
 		return employeeId;
 	}
@@ -57,10 +67,11 @@ public class Vacation {
 
 	@Override
 	public String toString() {
-		return "Vacation [vacationFrom=" + vacationFrom + ", vacationTo=" + vacationTo + ", reason=" + reason
-				+ ", employeeId=" + employeeId + "]";
+		return "Vacation [id=" + id + ", vacationFrom=" + vacationFrom + ", vacationTo=" + vacationTo + ", reason="
+				+ reason + ", status=" + status + ", employeeId=" + employeeId + "]";
 	}
 
+	
 	
 
 	
